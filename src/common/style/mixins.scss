@@ -1,0 +1,23 @@
+@import './variables.scss';
+
+// 设置flex布局
+@mixin set-flex ($direction: row, $wrap: nowrap) {
+  display: flex;
+  flex-flow: $direction $wrap;
+}
+
+// 单行溢出
+@mixin set-text-single-line{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// 多行溢出 手机端使用
+@mixin set-text-multi-line ($line) {
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}

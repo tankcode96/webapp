@@ -8,6 +8,10 @@ Vue.use(Router)
 // }
 
 // require 的方式实现懒加载
+const home = r => require.ensure([], () => r(require('@/pages/home/home')), 'home')
+const cart = r => require.ensure([], () => r(require('@/pages/cart/cart')), 'cart')
+const memberInfo = r => require.ensure([], () => r(require('@/pages/member/info')), 'info')
+const goodsDetail = r => require.ensure([], () => r(require('@/pages/goods/detail')), 'goodsDetail')
 const helloWorld = r => require.ensure([], () => r(require('@/components/HelloWorld')), 'helloWorld')
 
 export default new Router({
@@ -23,7 +27,36 @@ export default new Router({
     // },
     {
       path: '/',
-      name: 'HelloWorld',
+      name: 'home',
+      component: home
+    },
+    {
+      path: '/home',
+      meta: {
+        index: 1
+      },
+      component: home
+    },
+    {
+      path: '/cart',
+      meta: {
+        index: 1
+      },
+      component: cart
+    },
+    {
+      path: '/info',
+      meta: {
+        index: 1
+      },
+      component: memberInfo
+    },
+    {
+      path: '/goods/:id',
+      meta: {
+        index: 3
+      },
+      component: goodsDetail
     },
     {
       path: '/helloWorld',

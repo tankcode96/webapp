@@ -1,13 +1,18 @@
 <template>
   <div class="home">
-    home
+    <Home-Header />
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'home'
+import { HomeHeader } from '../../components'
+export default {
+  name: 'home',
+
+  components: {
+    HomeHeader
   }
+}
 </script>
 
 <style scoped lang="scss">

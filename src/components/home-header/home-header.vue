@@ -6,7 +6,29 @@
 
 <script>
   export default {
-    name: 'HomeHeader'
+    name: 'HomeHeader',
+
+    data () {
+      return {
+
+      }
+    },
+
+    created () {
+
+    },
+
+    mounted () {
+
+    },
+
+    computed: {
+
+    },
+
+    methods: {
+
+    }
   }
 </script>
 

@@ -12,7 +12,6 @@ const home = r => require.ensure([], () => r(require('@/pages/home/home')), 'hom
 const cart = r => require.ensure([], () => r(require('@/pages/cart/cart')), 'cart')
 const memberInfo = r => require.ensure([], () => r(require('@/pages/member/info')), 'info')
 const goodsDetail = r => require.ensure([], () => r(require('@/pages/goods/detail')), 'goodsDetail')
-const helloWorld = r => require.ensure([], () => r(require('@/components/HelloWorld')), 'helloWorld')
 
 export default new Router({
   routes: [
@@ -57,13 +56,6 @@ export default new Router({
         index: 3
       },
       component: goodsDetail
-    },
-    {
-      path: '/helloWorld',
-      meta: {
-        index: 1
-      },
-      component: helloWorld
     }
   ]
 })

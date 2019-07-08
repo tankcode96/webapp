@@ -6,6 +6,20 @@
   flex-flow: $direction $wrap;
 }
 
+// 设置flex布局的对齐方式
+@mixin set-flex-align ($alignItem: center, $justifyContent: center) {
+  -webkit-align-items: $alignItem;
+  align-items: $alignItem;
+  -webkit-justify-content: $justifyContent;
+  justify-content: $justifyContent;
+}
+
+// 设置宽高
+@mixin set-size ($width: auto, $height: auto) {
+  width: $width;
+  height: $height;
+}
+
 // 单行溢出
 @mixin set-text-single-line{
   overflow: hidden;

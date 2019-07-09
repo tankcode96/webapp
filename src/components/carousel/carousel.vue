@@ -8,11 +8,16 @@
       @touchmove.stop.prevent="watchTouchMove($event)"
       @touchend.stop.prevent="watchTouchEnd($event)">
       <template  v-for="(item, i) in carouselList">
-        <router-link class="carousel-item" tag="div" :to="`/goods/${item.id}`" v-bind:key="i">
+        <router-link class="carousel-item" tag="div" :to="`/goods/${item.id}`" :key="i">
           <img class="carousel-img" :src="require(`../../assets/images/${item.url}`)" :style="{width: basis.width, height: basis.height}" v-bind:key="i" />
         </router-link>
       </template>
     </div>
+    <ul class="point-box">
+      <template v-for="(item, i) in list">
+        <li class="point-item" :class="parseInt(i)+1 === currIndex ? 'active' : ''" :key="i"></li>
+      </template>
+    </ul>
   </div>
 </template>
 
@@ -60,6 +65,8 @@
 
     mounted () {
       this.autoRun()
+      console.log(this.list);
+      
     },
 
     computed: {
@@ -67,13 +74,12 @@
        * 构建轮播数组
        */
       carouselList () {
-        const carouselList = this.list
+        let carouselList = []
         if (this.list && this.list.length > 1) {
           const len = this.list.length
           const firstItem = this.list[0]
           const lastItem = this.list[len - 1]
-          carouselList.push(firstItem)
-          carouselList.unshift(lastItem)
+          carouselList = [lastItem].concat(this.list, [firstItem])
         }
         return carouselList
       }
@@ -227,6 +233,28 @@
 
   .move {
     transition: left ease-in-out 300ms;
+  }
+
+  .point-box {
+    @include set-flex;
+    @include set-flex-align;
+    @include set-size(10rem, 0.3rem);
+    position: absolute;
+    bottom: 0.2rem;
+    left: 0;
+
+    .point-item {
+      @include set-size(0.18rem, 0.18rem);
+      margin: 0 0.05rem;
+      box-sizing: border-box;
+      background: rgba($color: #bebebe, $alpha: .4);
+      border-radius: 50%;
+      border: 1px solid rgba($color: #bebebe, $alpha: .6);
+
+      &.active {
+      background: rgba($color: #000000, $alpha: .5);
+      }
+    }
   }
 }
 </style>

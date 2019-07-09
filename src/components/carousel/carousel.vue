@@ -37,9 +37,9 @@
 
     data () {
       return {
-        currIndex: 1, // 当前展示的图片index
+        currIndex: 0, // 当前展示的图片index
         carouselStyle: 0,  // 轮播图box的style
-        runClass: 'move', // 轮播时的类
+        runClass: '', // 轮播时的类
         startX: 0,  // 起始位置
         currentX: 0,  // 当前位置
         endX: 0,  // 离开位置
@@ -47,11 +47,15 @@
           removeClassTimer: null,
           autoRunTimer: null
         },
+        busy: false,  // 是否正在切换图片
       }
     },
 
     created () {
-      this.carouselStyle = {left: `${- (parseInt(this.basis.width) * this.currIndex)}rem`}
+      if (this.list && this.list.length > 1) {
+        this.currIndex = 1
+        this.carouselStyle = {left: `${- (parseInt(this.basis.width) * this.currIndex)}rem`}
+      }
     },
 
     mounted () {
@@ -64,7 +68,7 @@
        */
       carouselList () {
         const carouselList = this.list
-        if (this.list && this.list.length > 0) {
+        if (this.list && this.list.length > 1) {
           const len = this.list.length
           const firstItem = this.list[0]
           const lastItem = this.list[len - 1]
@@ -76,7 +80,11 @@
     },
 
     watch: {
+      /**
+       * 监听手指移动，图片跟随手指位置移动
+       */
       currentX () {
+        if (this.list && this.list.length < 2) return
         const html = document.getElementsByTagName('html')[0]
         const fontSize = parseInt(html.style.fontSize)
         const distance = this.currentX - this.startX
@@ -85,6 +93,9 @@
         }
       },
 
+      /**
+       * 监听当前图片index的变化
+       */
       currIndex () {
         this.carouselStyle = {
           left: `${-(parseInt(this.basis.width) * this.currIndex)}rem`
@@ -97,6 +108,7 @@
        * 开始自动轮播
        */
       autoRun () {
+        if (this.list && this.list.length < 2) return
         this.clearTimer(this.time.autoRunTimer)
         const autoRunTimer = setInterval(() => {
           if (this.currIndex === this.carouselList.length - 2) {
@@ -141,7 +153,7 @@
         const speed = this.watchMoveSpeed()
         
         this.runClass = 'move'
-        this.switchCarouselItem(speed)
+        if (this.list && this.list.length > 1 && !this.busy) this.switchCarouselItem(speed)
       },
 
       /**
@@ -161,11 +173,7 @@
         const distance = (this.endX - this.startX)
         this.busy = true
         if (speed > 0.3 || Math.abs(distance / fontSize) > 8.5) {
-          if (distance > 0) {
-            this.currIndex -= 1
-          } else {
-            this.currIndex += 1
-          }
+          this.currIndex += distance > 0 ? -1 : 1
         } else {
           this.carouselStyle = {
             left: `${-(parseInt(this.basis.width) * this.currIndex)}rem`
@@ -189,7 +197,7 @@
           this.busy = false
           this.autoRun()
         }, this.basis.duration);
-        this.time['removeClassTimer'] = removeClassTimer
+        this.time.removeClassTimer = removeClassTimer
       },
 
       /**

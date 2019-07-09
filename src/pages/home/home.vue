@@ -30,7 +30,7 @@ export default {
         height: '4.88rem',
         auto: true,
         duration: 300,
-        time: 1500
+        time: 3000
       }
     }
   },

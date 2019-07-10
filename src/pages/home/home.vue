@@ -1,11 +1,12 @@
 <template>
   <div class="home">
+    <Header />
     <Carousel :list="list" :basis="carouselBasis" />
   </div>
 </template>
 
 <script>
-import { Carousel } from '../../components'
+import { Header, Carousel } from '../../components'
 export default {
   name: 'home',
 
@@ -36,6 +37,7 @@ export default {
   },
 
   components: {
+    Header,
     Carousel
   }
 }

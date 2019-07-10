@@ -8,7 +8,7 @@
       @touchmove.stop.prevent="watchTouchMove($event)"
       @touchend.stop.prevent="watchTouchEnd($event)">
       <template  v-for="(item, i) in carouselList">
-        <router-link class="carousel-item" tag="div" :to="`/goods/${item.id}`" :key="i">
+        <router-link class="carousel-item" tag="a" :to="`/goods/${item.id}`" :key="i">
           <img class="carousel-img" :src="require(`../../assets/images/${item.url}`)" :style="{width: basis.width, height: basis.height}" v-bind:key="i" />
         </router-link>
       </template>
@@ -65,8 +65,10 @@
 
     mounted () {
       this.autoRun()
-      console.log(this.list);
-      
+    },
+
+    destroyed () {
+      this.clearTimer(this.time.autoRunTimer)
     },
 
     computed: {

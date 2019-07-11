@@ -1,15 +1,12 @@
 <template>
-  <div class="detail">
-    detail
-  </div>
+  <div class="detail">detail</div>
 </template>
 
 <script>
-  export default {
-    name: 'detail'
-  }
+export default {
+  name: "detail"
+};
 </script>
 
 <style scoped>
-
 </style>

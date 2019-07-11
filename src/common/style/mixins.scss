@@ -35,3 +35,17 @@
   -webkit-line-clamp: $line;
   -webkit-box-orient: vertical;
 }
+
+// 用[data-dpr]属性来区分不同dpr下的文本字号大小
+// 注：如果使用px2rem-loader，那么就不用使用此宏方法
+@mixin font-dpr($font-size){
+  font-size: $font-size;
+
+  [data-dpr="2"] & {
+      font-size: $font-size * 2;
+  }
+
+  [data-dpr="3"] & {
+      font-size: $font-size * 3;
+  }
+}

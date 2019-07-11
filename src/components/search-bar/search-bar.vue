@@ -9,26 +9,25 @@
 </template>
 
 <script>
-  export default {
-    name: 'SearchBar',
+export default {
+  name: "SearchBar",
 
-    data () {
-      return {
-        searchText: '',  // 搜索内容
-      }
-    }
+  data() {
+    return {
+      searchText: "" // 搜索内容
+    };
   }
+};
 </script>
 
 <style lang="scss" type="text/scss" scoped>
-@import '../../common/style/reset.scss';
-@import '../../common/style/mixins.scss';
+@import "../../common/style/reset.scss";
+@import "../../common/style/mixins.scss";
 
 .search-bar {
   @include set-flex;
   @include set-flex-align($alignItem: center, $justifyContent: space-between);
   @include set-size(100%, 1.33rem);
   padding: 0 0.4rem;
-
 }
 </style>

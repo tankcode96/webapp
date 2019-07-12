@@ -27,8 +27,8 @@ export default {
         }
       ],
       carouselBasis: {
-        width: "10rem",
-        height: "4.88rem",
+        width: 375,
+        height: 183,
         auto: true,
         duration: 300,
         time: 3000

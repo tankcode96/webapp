@@ -1,5 +1,5 @@
 <template>
-  <div class="carousel" :style="{width: basis.width, height: basis.height}">
+  <div class="carousel" :style="{width: `${basis.width*2/fontSize}rem`, height: `${basis.height*2/fontSize}rem`}">
     <div
       class="carousel-box"
       :class="runClass"
@@ -13,7 +13,7 @@
           <img
             class="carousel-img"
             :src="require(`../../assets/images/${item.url}`)"
-            :style="{width: basis.width, height: basis.height}"
+            :style="{width: `${basis.width*2/fontSize}rem`, height: `${basis.height*2/fontSize}rem`}"
             v-bind:key="i"
           />
         </router-link>
@@ -48,6 +48,7 @@ export default {
 
   data() {
     return {
+      fontSize: 75, // 全局定义的fontSize大小
       currIndex: 0, // 当前展示的图片index
       carouselStyle: 0, // 轮播图box的style
       runClass: "", // 轮播时的类
@@ -60,24 +61,24 @@ export default {
         autoRunTimer: null
       },
       busy: false // 是否正在切换图片
-    };
+    }
   },
 
   created() {
     if (this.list && this.list.length > 1) {
-      this.currIndex = 1;
+      this.currIndex = 1
       this.carouselStyle = {
-        left: `${-(parseInt(this.basis.width) * this.currIndex)}rem`
-      };
+        left: `${-(parseInt(this.basis.width) * this.currIndex)}px`
+      }
     }
   },
 
   mounted() {
-    this.autoRun();
+    this.autoRun()
   },
 
   destroyed() {
-    this.clearTimer(this.time.autoRunTimer);
+    this.clearTimer(this.time.autoRunTimer)
   },
 
   computed: {
@@ -85,14 +86,14 @@ export default {
      * 构建轮播数组
      */
     carouselList() {
-      let carouselList = [];
+      let carouselList = []
       if (this.list && this.list.length > 1) {
-        const len = this.list.length;
-        const firstItem = this.list[0];
-        const lastItem = this.list[len - 1];
-        carouselList = [lastItem].concat(this.list, [firstItem]);
+        const len = this.list.length
+        const firstItem = this.list[0]
+        const lastItem = this.list[len - 1]
+        carouselList = [lastItem].concat(this.list, [firstItem])
       }
-      return carouselList;
+      return carouselList
     }
   },
 
@@ -101,14 +102,12 @@ export default {
      * 监听手指移动，图片跟随手指位置移动
      */
     currentX() {
-      if (this.list && this.list.length < 2) return;
-      const html = document.getElementsByTagName("html")[0];
-      const fontSize = parseInt(html.style.fontSize);
-      const distance = this.currentX - this.startX;
+      if (this.list && this.list.length < 2) return
+      
+      const distance = this.currentX - this.startX
       this.carouselStyle = {
-        left: `${distance / fontSize -
-          parseInt(this.basis.width) * this.currIndex}rem`
-      };
+        left: `${(distance  - this.basis.width * this.currIndex) / this.fontSize * 2}rem`
+      }
     },
 
     /**
@@ -116,8 +115,8 @@ export default {
      */
     currIndex() {
       this.carouselStyle = {
-        left: `${-(parseInt(this.basis.width) * this.currIndex)}rem`
-      };
+        left: `${-(this.basis.width * this.currIndex) / this.fontSize * 2}rem`
+      }
     }
   },
 
@@ -126,19 +125,19 @@ export default {
      * 开始自动轮播
      */
     autoRun() {
-      if (this.list && this.list.length < 2) return;
-      this.clearTimer(this.time.autoRunTimer);
+      if (this.list && this.list.length < 2) return
+      this.clearTimer(this.time.autoRunTimer)
       const autoRunTimer = setInterval(() => {
         if (this.currIndex === this.carouselList.length - 2) {
-          this.runClass = "";
-          this.currIndex = 0;
+          this.runClass = ""
+          this.currIndex = 0
         }
         setTimeout(() => {
-          this.runClass = "move";
-          this.currIndex += 1;
-        }, 0);
-      }, this.basis.time);
-      this.time.autoRunTimer = autoRunTimer;
+          this.runClass = "move"
+          this.currIndex += 1
+        }, 0)
+      }, this.basis.time)
+      this.time.autoRunTimer = autoRunTimer
     },
 
     /**
@@ -146,10 +145,10 @@ export default {
      */
     watchTouchStart(e) {
       if (e.touches.length === 1) {
-        this.startX = e.touches[0].clientX;
-        this.startTime = e.timeStamp;
-        this.runClass = "";
-        this.clearTimer(this.time.autoRunTimer);
+        this.startX = e.touches[0].clientX
+        this.startTime = e.timeStamp
+        this.runClass = ""
+        this.clearTimer(this.time.autoRunTimer)
       }
     },
 
@@ -158,7 +157,7 @@ export default {
      */
     watchTouchMove(e) {
       if (e.touches.length === 1) {
-        this.currentX = e.touches[0].clientX;
+        this.currentX = e.touches[0].clientX
       }
     },
 
@@ -166,13 +165,13 @@ export default {
      * 记录触摸离开位置
      */
     watchTouchEnd(e) {
-      this.endX = e.changedTouches[0].clientX;
-      this.endTime = e.timeStamp;
-      const speed = this.watchMoveSpeed();
+      this.endX = e.changedTouches[0].clientX
+      this.endTime = e.timeStamp
+      const speed = this.watchMoveSpeed()
 
-      this.runClass = "move";
+      this.runClass = "move"
       if (this.list && this.list.length > 1 && !this.busy)
-        this.switchCarouselItem(speed);
+        this.switchCarouselItem(speed)
     },
 
     /**
@@ -181,7 +180,7 @@ export default {
     watchMoveSpeed() {
       return Math.abs(
         (this.endX - this.startX) / (this.endTime - this.startTime)
-      );
+      )
     },
 
     /**
@@ -189,36 +188,34 @@ export default {
      * @param {number} speed
      */
     switchCarouselItem(speed = 0) {
-      const html = document.getElementsByTagName("html")[0];
-      const fontSize = parseInt(html.style.fontSize);
-      const distance = this.endX - this.startX;
-      this.busy = true;
-      if (speed > 0.3 || Math.abs(distance / fontSize) > 8.5) {
-        this.currIndex += distance > 0 ? -1 : 1;
+      const distance = this.endX - this.startX
+      this.busy = true
+      if (speed > 0.3 || Math.abs(distance * 2 / this.fontSize) > 8.5 * this.fontSize / 2) {
+        this.currIndex += distance > 0 ? -1 : 1
       } else {
         this.carouselStyle = {
-          left: `${-(parseInt(this.basis.width) * this.currIndex)}rem`
-        };
+          left: `${-(this.basis.width * 2 * this.currIndex) / this.fontSize}rem`
+        }
       }
-      this.setRunTimeOut();
+      this.setRunTimeOut()
     },
 
     /**
      * 定时清理掉runClass
      */
     setRunTimeOut() {
-      this.clearTimer(this.time.removeClassTimer);
+      this.clearTimer(this.time.removeClassTimer)
       const removeClassTimer = setTimeout(() => {
         if (this.currIndex === 0) {
-          this.currIndex = this.carouselList.length - 2;
+          this.currIndex = this.carouselList.length - 2
         } else if (this.currIndex === this.carouselList.length - 1) {
-          this.currIndex = 1;
+          this.currIndex = 1
         }
-        this.runClass = "";
-        this.busy = false;
-        this.autoRun();
-      }, this.basis.duration);
-      this.time.removeClassTimer = removeClassTimer;
+        this.runClass = ""
+        this.busy = false
+        this.autoRun()
+      }, this.basis.duration)
+      this.time.removeClassTimer = removeClassTimer
     },
 
     /**
@@ -226,10 +223,10 @@ export default {
      * @param {object} timer
      */
     clearTimer(timer) {
-      timer && clearTimeout(timer);
+      timer && clearTimeout(timer)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" type="text/scss" scoped>
@@ -253,14 +250,14 @@ export default {
   .point-box {
     @include set-flex;
     @include set-flex-align;
-    @include set-size(10rem, 0.3rem);
+    @include set-size(100%, 20px);
     position: absolute;
-    bottom: 0.2rem;
+    bottom: 15px;
     left: 0;
 
     .point-item {
-      @include set-size(0.18rem, 0.18rem);
-      margin: 0 0.05rem;
+      @include set-size(12px, 12px);
+      margin: 0 6px;
       box-sizing: border-box;
       background: rgba($color: #bebebe, $alpha: 0.4);
       border-radius: 50%;

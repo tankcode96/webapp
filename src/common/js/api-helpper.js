@@ -13,16 +13,16 @@ axios.interceptors.request.use(function(config) {
 
 
 //响应拦截器
-axios.interceptors.response.use(function(response) => {
+axios.interceptors.response.use(function(response) {
   console.log(response.data)
   // 在此做状态判断
-}, function(error) => {
+}, function(error) {
   // 响应出错情况
   return Promise.reject(error)
 })
 
 
-export default function http({ url: '', data: {}, type='POST' }) {
+export default function http({ url, data: {}, type='POST' }) {
   return new Promise((resolve, reject) => {
     console.log('请求地址：', url)
     console.log('请求参数：', data)

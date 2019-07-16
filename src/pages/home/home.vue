@@ -7,6 +7,7 @@
 
 <script>
 import { Header, Carousel } from "../../components";
+import { homeData } from '../../common/js/api-http'
 export default {
   name: "home",
 
@@ -39,6 +40,12 @@ export default {
   components: {
     Header,
     Carousel
+  },
+  
+  mounted() {
+    homeData().then(res => {
+      console.log(res)
+    })
   }
 };
 </script>

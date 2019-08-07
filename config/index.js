@@ -15,7 +15,7 @@ module.exports = {
         target: 'http://test.happymmall.com',  // 源地址
         changeOrigin: true,  // 改变源
         pathRewrite: {
-          '^api': ''  // 路径重写
+          '^/api': ''  // 路径重写
         }
       }
     },

@@ -1,3 +1,4 @@
+// 使用mock模拟首页数据
 const Mock = require('mockjs')
 
 let homeData = {

@@ -7,7 +7,7 @@
 
 <script>
 import { Header, Carousel } from "../../components";
-import { homeData } from '../../common/js/api-http'
+import { homeData, checkLogin, userLogin, cartList } from '../../common/js/api-http'
 export default {
   name: "home",
 
@@ -41,10 +41,18 @@ export default {
     Header,
     Carousel
   },
+
+  beforeCreate () {
+    // userLogin('kunming100', 'tan6300853').then(res => {
+    //   console.log(res)
+    // })
+  },
   
   mounted() {
-    homeData().then(res => {
+    cartList().then(res => {
       console.log(res)
+    }).catch(e => {
+      console.log(e)
     })
   }
 };
